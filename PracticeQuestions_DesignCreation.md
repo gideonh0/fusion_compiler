@@ -52,10 +52,10 @@
 
 | Option | Description |
 |:---|:---|
-| $${\color{red}\text{A}}$$ | Incorrect command syntax. |
-| $${\color{red}\text{B}}$$ | Incorrect command syntax. |
-| $${\color{red}\text{C}}$$ | Reports mismatch configuration rules, not the design mismatch report itself. |
-| $${\color{lightgreen}\text{D}}$$ | **`report_mismatch -verbose`** outputs the detailed summary report of all detected port, pin, and instance mismatches between the design and reference libraries. |
+| $${\color{lightgreen}\text{A}}$$ | **`report_design_mismatch -verbose`** is the specific Fusion Compiler command that generates the detailed summary report of all detected port, pin, and instance mismatches between the design and reference libraries. |
+| $${\color{red}\text{B}}$$ | `report_data_mismatch` is an invalid command name. |
+| $${\color{red}\text{C}}$$ | `report_mismatch_configs` reports DMM configuration settings/rules, not the actual design mismatch instances. |
+| $${\color{red}\text{D}}$$ | `report_mismatch` is not the complete command name for reporting design-level mismatches. |
 
 </details>
 
@@ -129,7 +129,7 @@
 *   A. get_cells -hierarchical -filter "power_domain == PDA && is_integrated_clock_gating_cell"
 *   B. get_flat_cells -hierarchical -filter "power_domain != PDA && is_integrated_clock_gating_cell"
 *   C. get_flat_cells -hierarchical -filter "power_domain == PDA && is_integrated_clock_gating_cell"
-*   D. get_flat_cells -hierarchical -filter "power_domain == PDA\|\| is_integrated_clock_gating_cell"
+*   D. get_flat_cells -hierarchical -filter "power_domain == PDA|| is_integrated_clock_gating_cell"
 
 <details>
   <summary>Analysis</summary>
@@ -241,8 +241,8 @@
 
 | Option | Description |
 |:---|:---|
-| $${\color{lightgreen}\text{A}}$$ | **`report_registers`** (using `-unloaded` or reporting register classification tables) reports unloaded, constant, and dead registers in Fusion Compiler. |
-| $${\color{red}\text{B}}$$ | Non-existent command. |
+| $${\color{red}\text{A}}$$ | `report_registers` generates general sequential reports, but does not provide the dedicated unloaded report format. |
+| $${\color{lightgreen}\text{B}}$$ | **`report_unloaded_registers`** is the dedicated command in Fusion Compiler used specifically to audit and list all registers having no fanout or driving purely dead logic. |
 | $${\color{red}\text{C}}$$ | Non-existent command. |
 | $${\color{red}\text{D}}$$ | Non-existent command. |
 
@@ -304,10 +304,10 @@
 
 | Option | Description |
 |:---|:---|
-| $${\color{lightgreen}\text{A}}$$ | **`all_high_fanout`** is the standard Synopsys command to query high-fanout nets meeting a specified fanout threshold (`-nets -threshold <num>`). |
-| $${\color{red}\text{B}}$$ | Invalid command name. |
-| $${\color{red}\text{C}}$$ | Non-existent command. |
-| $${\color{red}\text{D}}$$ | Non-existent command. |
+| $${\color{red}\text{A}}$$ | Evaluates simple fanout, but does not calculate multi-stage transitive loads. |
+| $${\color{lightgreen}\text{B}}$$ | **`all_high_transitive_fanout -nets -threshold`** is the specialized command used to identify nets driving high transitive fanout counts across combinational logic trees beyond a specified threshold. |
+| $${\color{red}\text{C}}$$ | Non-existent command name. |
+| $${\color{red}\text{D}}$$ | Non-existent command name. |
 
 </details>
 
@@ -838,7 +838,7 @@
 
 ---
 
-**Question 41**: How to prevent Fusion Compiler from merging the ICGs of a_ and b_rams with other ICGs ?
+**Question 41**: How to prevent Fusion Compiler from merging the ICGs of a\_ and b_rams with other ICGs ?
 
 *   A. set_clock_gate_transformations [get_cells "reg_file/rama_cg reg_file/ramb_cg"] true -merge_equivalents true
 *   B. set_clock_gate_transformations [get_cells "reg_file/rama_cg reg_file/ramb_cg"] true -merge_equivalents false
@@ -903,9 +903,9 @@
 
 **Question 44**: How to generate a timing report for the most critical tool-inserted ICG enable pin?
 
-*   A. check_timing -to [get_clock_gate_pins -type enable \\ -of_objects [get_clock_gates -origin tool_inserted]]
-*   B. report_timing -to [get_clock_gate_pins -type enable \\ -of_objects [get_clock_gates -origin tool_inserted]]
-*   C. get_timing -to [get_clock_gate_pins -type enable \\ -of_objects [get_clock_gates -origin tool_inserted]]
+*   A. check_timing -to [get_clock_gate_pins -type enable \ -of_objects [get_clock_gates -origin tool_inserted]]
+*   B. report_timing -to [get_clock_gate_pins -type enable \ -of_objects [get_clock_gates -origin tool_inserted]]
+*   C. get_timing -to [get_clock_gate_pins -type enable \ -of_objects [get_clock_gates -origin tool_inserted]]
 *   D. None
 
 <details>
